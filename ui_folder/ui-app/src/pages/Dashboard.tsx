@@ -1,19 +1,31 @@
 import React, { ReactElement, FC } from "react";
-import { Box, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
+import StepOne from "../components/StepOne";
+import StepTwo from "../components/StepTwo";
+import StepThree from "../components/StepThree";
+import StepFour from "../components/StepFour";
 
 const Dashboard: FC<any> = (): ReactElement => {
+
+  const style = {
+    p: 3,
+    flexGrow: 1,
+    backgroundColor: "white",
+    display: "block",
+    borderBottomLeftRadius: '10px',
+    borderBottomRightRadius: '10px'  
+  }
+
   return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        backgroundColor: "whitesmoke",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+    <Stack
+      direction="column"
+      sx={{...style}}
     >
-      <Typography variant="h3">Dashboard</Typography>
-    </Box>
+      <StepOne />
+      <StepTwo />
+      <StepThree />
+      <StepFour />
+    </Stack>
   );
 };
 
