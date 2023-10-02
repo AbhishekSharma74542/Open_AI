@@ -22,7 +22,7 @@ vectorstore = FAISS.from_texts(texts, embeddings)
 
 class OpenAIController:
     def __init__(self):
-        openai.api_key = "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"
+        openai.api_key = "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"
 
 
     def create_embeddings(self):
@@ -64,7 +64,7 @@ class OpenAIController:
     def perform_qanda(self, query):
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
         texts = text_splitter.split_text(state_of_the_union)
-        api_key = "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"
+        api_key = "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"
         embeddings = OpenAIEmbeddings(openai_api_key = api_key)
         vectorstore = FAISS.from_texts(texts, embeddings)
         print("Printing Vector store")
