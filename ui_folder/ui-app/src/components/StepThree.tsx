@@ -7,7 +7,6 @@ const StepThree = () => {
   const dispatch = useAppDispatch()
 
   const onInputText = (e: any) => {
-    console.log('on input text', e.target.value)
     dispatch(fetchInputText(e.target.value))
   }
   
