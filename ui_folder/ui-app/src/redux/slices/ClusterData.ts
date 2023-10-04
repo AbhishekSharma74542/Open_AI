@@ -1,25 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { fetchSearchText } from '../thunks/SearchText'
+import { fetchClusterData } from '../thunks/ClusterData';
 
-export interface SearchTextState {
+export interface clusterDataState {
   error: string | null;
   data: any;
   fetching: boolean | null;
   doneFetching: boolean | null;
 }
 
-const initialState: SearchTextState = {
+const initialState: clusterDataState = {
   data: [],
   fetching: false,
   doneFetching: false,
   error: null,
 }
 
-export const searchTerm = createSlice({
-  name: 'searchTerm',
+export const clusterData = createSlice({
+  name: 'cluster',
   initialState,
   reducers: {
-    resetInputPage: (state) => {
+    resetClusterData: (state) => {
       state.data = initialState.data
     },
     setInputText: (state, action) => {
@@ -28,19 +28,19 @@ export const searchTerm = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchSearchText.pending, (state) => {
+      .addCase(fetchClusterData.pending, (state) => {
         state.fetching = true
       })
-      .addCase(fetchSearchText.fulfilled, (state, action) => {
+      .addCase(fetchClusterData.fulfilled, (state, action) => {
         state.data = action.payload;
         state.fetching = false
         state.doneFetching = true
       })
-      .addCase(fetchSearchText.rejected, (state, action) => {
+      .addCase(fetchClusterData.rejected, (state, action) => {
         state.error = action.error.message;
-      });      
+      });
   },
 })
 
-export const { resetInputPage, setInputText } = searchTerm.actions
-export default searchTerm.reducer
+export const { resetClusterData, setInputText } = clusterData.actions
+export default clusterData.reducer

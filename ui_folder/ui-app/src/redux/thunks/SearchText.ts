@@ -16,8 +16,8 @@ export const fetchSearchText: any = createAsyncThunk<
   async (params = {}, { getState, rejectWithValue }) => {
     try {
       const { inputText: { data } } = getState()
-      
-      const response = await fetch(`${SEARCH_TERM}?query=${data}`);
+
+      const response = await fetch(`${SEARCH_TERM}?search_term=${data}`);
       const result = await response.json();
 
       return result

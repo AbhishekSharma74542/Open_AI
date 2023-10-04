@@ -6,25 +6,35 @@ import StepThree from "../components/StepThree";
 import StepFour from "../components/StepFour";
 
 const Dashboard: FC<any> = (): ReactElement => {
+  const [createEmbed, setCreateEmbed] = React.useState(false);
 
   const style = {
     p: 3,
     flexGrow: 1,
     backgroundColor: "white",
     display: "block",
-    borderBottomLeftRadius: '10px',
-    borderBottomRightRadius: '10px'  
-  }
+    borderBottomLeftRadius: "10px",
+    borderBottomRightRadius: "10px",
+  };
+
+  const onclickEmbed = () => {
+    setCreateEmbed(true);
+  };
+
+  const StepsContent = () => {
+    return (
+      <Stack direction="column" sx={{ ...style }}>
+        <StepOne onEmbed={onclickEmbed} />
+        <StepTwo embed={createEmbed} />
+        <StepThree />
+        <StepFour />
+      </Stack>
+    );
+  };
 
   return (
-    <Stack
-      direction="column"
-      sx={{...style}}
-    >
-      <StepOne />
-      <StepTwo />
-      <StepThree />
-      <StepFour />
+    <Stack direction="column" sx={{ ...style }}>
+      <StepsContent />
     </Stack>
   );
 };

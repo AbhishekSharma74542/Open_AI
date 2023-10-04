@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { fetchInputText } from '../thunks/InputText'
+import { fetchStepTwo } from '../thunks/StepTwo'
 
 const initialState = {
-  data: "",
+  data: "semantic",
   updating: false,
   doneUpdating: false,
 }
 
-export const inputText = createSlice({
-  name: 'textAnalysis',
+export const stepTwo = createSlice({
+  name: 'stepTwo',
   initialState,
   reducers: {
     resetInputPage: (state) => {
@@ -20,10 +20,10 @@ export const inputText = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchInputText.pending, (state) => {
+      .addCase(fetchStepTwo.pending, (state) => {
         state.updating = true
       })
-      .addCase(fetchInputText.fulfilled, (state, action) => {
+      .addCase(fetchStepTwo.fulfilled, (state, action) => {
         state.data = action.payload;
         state.updating = false
         state.doneUpdating = true
@@ -31,5 +31,5 @@ export const inputText = createSlice({
   },
 })
 
-export const { resetInputPage, setInputText } = inputText.actions
-export default inputText.reducer
+export const { resetInputPage, setInputText } = stepTwo.actions
+export default stepTwo.reducer

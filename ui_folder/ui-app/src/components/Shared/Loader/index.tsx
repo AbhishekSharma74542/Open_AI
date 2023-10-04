@@ -1,6 +1,6 @@
-import * as React from 'react'
-import CircularProgress from '@mui/material/CircularProgress'
-import Box from '@mui/material/Box'
+import * as React from "react";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 const Loader = () => {
   return (
@@ -9,11 +9,11 @@ const Loader = () => {
       alignItems="center"
       justifyContent="center"
       flexGrow={1}
-      height="calc(100vh - 2.87rem)"
+      height="100%"
     >
       <CircularProgress />
     </Box>
-  )
-}
+  );
+};
 
-export default Loader
+export default Loader;
