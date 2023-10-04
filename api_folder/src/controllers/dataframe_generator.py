@@ -12,6 +12,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain import OpenAI, VectorDBQA
 from src.controllers.longtext import state_of_the_union
 from src.controllers.sample import sample_json
+import requests as requests
 
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
@@ -22,23 +23,30 @@ vectorstore = FAISS.from_texts(texts, embeddings)
 
 class OpenAIController:
     def __init__(self):
-        openai.api_key = "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"
+        openai.api_key = "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"
 
 
     def create_embeddings(self):
+        response=requests.get("https://lets.talk.goredc.govt.nz/api/v2/projects/59654/forums/174457/comments?per_page=10", headers={"X-API-Token":"Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2OTYzOTcwODUsImp0aSI6IjUzZjU2MjQ1YzIxODk5NmI3OTAwOGVmODcxMWZmMjZhIiwiZXhwIjoxNjk2NTY5ODg1LCJpc3MiOiJCYW5nIFRoZSBUYWJsZSBQdnQgTHRkIiwiZGF0YSI6eyJ1c2VyX2lkIjoxNDEwNjE1NTMxLCJ1c2VyX3R5cGUiOiJBbm9ueW1vdXNVc2VyIiwic2l0ZV9pZCI6bnVsbCwicHJvamVjdF9pZCI6bnVsbH19._BNjQy7MWiXY0hsKc4wE9RrhQ6YorAumC17e0xMhJcY"})
+        data = response.json()
         df = pd.read_csv('words.csv')
-        print(df)
-        df['embedding'] = df['text'].apply(lambda x: get_embedding(x, engine='text-embedding-ada-002'))
+        contributions = data['data']
+        comments = []
+        for contribution in contributions:
+            comments.append({'comment': contribution['attributes']['comment'], 'author': contribution['attributes']['author']})
+        pd.DataFrame(comments).to_csv('words.csv')
+        df = pd.read_csv('words.csv')
+        df['embedding'] = df['comment'].apply(lambda x: get_embedding(x, engine='text-embedding-ada-002'))
         df.to_csv('word_embeddings.csv')
         df = pd.read_csv('word_embeddings.csv')
-        selected_columns = ["Term", "text"]
+        selected_columns = ["author", "comment"]
         selected_df = df[selected_columns]
         json_data = selected_df.to_json(orient='records')
         return json_data
     
     def perform_clustering(self):
         df = pd.read_csv('word_embeddings.csv')
-        corpus = df['text'].to_numpy().tolist()
+        corpus = df['comment'].to_numpy().tolist()
         print(corpus)
         response = openai.Embedding.create(
             input=corpus,
@@ -62,9 +70,13 @@ class OpenAIController:
         return {"clustered_sentences": clustered_sentences}, 200
     
     def perform_qanda(self, query):
+        df = pd.read_csv('words.csv')
+        column_series = df["comment"]
+        column_series
+        concatenated_string = ' '.join(column_series.astype(str))
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
-        texts = text_splitter.split_text(state_of_the_union)
-        api_key = "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"
+        texts = text_splitter.split_text(concatenated_string)
+        api_key = "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"
         embeddings = OpenAIEmbeddings(openai_api_key = api_key)
         vectorstore = FAISS.from_texts(texts, embeddings)
         print("Printing Vector store")
